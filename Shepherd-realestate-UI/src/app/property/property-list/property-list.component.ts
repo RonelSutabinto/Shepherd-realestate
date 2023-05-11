@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { HousingService } from 'src/app/services/housing.service';
+import { IProperty } from '../IProperty.interface';
 
 @Component({
   selector: 'app-property-list',
@@ -7,49 +9,21 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PropertyListComponent implements OnInit{
 
-  properties: Array<any> = [
-    {
-      "id":1,
-      "Name":"Birla House",
-      "Type":"House",
-      "Price":12000
-    },
-    {
-      "id":2,
-      "Name":"Erose Villa",
-      "Type":"Villa",
-      "Price":12000
-    },
-    {
-      "id":3,
-      "Name":"Mark Hill",
-      "Type":"Flat",
-      "Price":15300
-    },
-    {
-      "id":4,
-      "Name":"Camela House",
-      "Type":"House",
-      "Price":11400
-    },
-    {
-      "id":5,
-      "Name":"Macro Home",
-      "Type":"House",
-      "Price":14300
-    },
-    {
-      "id":6,
-      "Name":"Pearl White",
-      "Type":"House",
-      "Price":18000
-    }
-  ]
+  properties: Array<IProperty> = [];
 
-  constructor(){ }
+  constructor(private housingService: HousingService){ }
 
+  // dependent injection
   ngOnInit(): void {
-    throw new Error('Method not implemented.');
+    this.housingService.getAllProperties().subscribe(
+      data => {
+        this.properties = data;
+        console.log(data)
+      }, error => {
+        console.log('httperror:');
+        console.log(error);
+      }
+    );
   }
   
 }
